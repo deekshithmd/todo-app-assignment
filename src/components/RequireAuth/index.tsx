@@ -10,14 +10,15 @@ const RequiresAuth = ({ children }: { children: any }) => {
   const isAuthorized = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const router = useRouter();
+
   useEffect(() => {
     let isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isAuthorized && !isLoggedIn) {
-      router.push("/login");
-    } else {
+    if (isAuthorized || isLoggedIn) {
       const storedTodo = JSON.parse(localStorage.getItem("todos"));
       dispatch(populateTodo(storedTodo));
-      setAuthentication(true)
+      dispatch(setAuthentication(true));
+    } else {
+      router.push("/auth/login");
     }
   }, [isAuthorized, router]);
 

@@ -1,10 +1,12 @@
+"use client";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { todos } from "@/data/todos";
+import { TodoType } from "@/types/type";
 
 // Define a type for the slice state
 interface TodoState {
-  todos?: any;
+  todos?: TodoType[];
 }
 
 // Define the initial state using that type
@@ -38,6 +40,13 @@ export const todoSlice = createSlice({
         todo?.id === action.payload.id ? action.payload : todo
       );
     },
+    markImportant: (state, action: PayloadAction<any>) => {
+      state.todos = state.todos?.map((todo) =>
+        todo?.id === action.payload.id
+          ? { ...todo, important: todo?.important ? false : true }
+          : todo
+      );
+    },
   },
 });
 
@@ -47,6 +56,7 @@ export const {
   markComplete,
   updateEditedTodo,
   populateTodo,
+  markImportant,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

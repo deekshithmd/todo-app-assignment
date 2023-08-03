@@ -1,19 +1,27 @@
+"use client";
 import React from "react";
 import styled from "styled-components";
 
 export const Modal = ({ children }: { children: React.ReactNode }) => {
-  return <ModalContainer>{children}</ModalContainer>;
+  return (
+    <ModalContainer>
+      {children}
+    </ModalContainer>
+  );
 };
 
 const ModalContainer = styled.div`
   position: fixed;
-  top: 0;
+  top: 12vh;
   right: 0;
   bottom: 0;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: black;
-  opacity: 0.9;
+  background: #f5f4d5;
+  opacity: 1;
+  z-index:2;
 `;
+
+

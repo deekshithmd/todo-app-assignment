@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { credentials } from "@/data/credentials";
 import { useRouter } from "next/navigation";
+import { SignupDataType } from "@/types/type";
 
 const SignupPage = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<SignupDataType>({
     username: "",
     password: "",
     confirm: "",
@@ -19,9 +20,9 @@ const SignupPage = () => {
         username: userData?.username,
         password: userData?.password,
       });
-      router?.push("/login");
+      router?.push("/auth/login");
     } else {
-      router?.push("/signup");
+      router?.push("/auth/signup");
     }
     setUserData({
       username: "",

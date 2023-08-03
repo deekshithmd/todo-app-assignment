@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,18 +14,18 @@ export const Header = () => {
 
   const handleLogout = () => {
     dispatch(setAuthentication(false));
-    router.push("/login");
+    router.push("/auth/login");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("todos");
   };
   return (
     <HeaderContainer>
-      <Logo onClick={() => router.push("/")}>Todo App</Logo>
+      <Logo onClick={() => router.push("/")}>To-Do App</Logo>
       {!isAuthorized ? (
         <Button
           fontSize="16px"
           onClick={() => {
-            router.push("/login");
+            router.push("/auth/login");
           }}
         >
           Login

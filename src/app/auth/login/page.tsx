@@ -5,16 +5,17 @@ import { credentials } from "@/data/credentials";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAuthentication } from "@/features/auth/authSlice";
+import { LoginDataType } from "@/types/type";
 
 const LoginPage = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<LoginDataType>({
     username: "",
     password: "",
   });
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const handleLogin = (e:any) => {
+  const handleLogin = (e: any) => {
     e.preventDefault();
     let isMatched = false;
     for (let value of credentials) {
@@ -28,7 +29,7 @@ const LoginPage = () => {
       }
     }
     if (!isMatched) {
-      router.push("/signup");
+      router.push("/auth/signup");
     }
   };
 
