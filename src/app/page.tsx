@@ -52,9 +52,9 @@ export default function Home() {
     if (selectedFilter?.value === "all") {
       setFiltered(todos);
     } else {
-      const todoData = todos?.filter((item: any) =>
-        item(selectedFilter?.value)
-      );
+      const filterValue =
+        selectedFilter?.value === "important" ? "important" : "completed";
+      const todoData = todos?.filter((item: any) => item[filterValue]);
       setFiltered(todoData);
     }
   }, [selectedFilter, todos]);
@@ -201,6 +201,7 @@ export default function Home() {
                           width="200px"
                           borderRadius="15px"
                           fontSize="14px"
+                          hoverColor="#f7855c"
                           onClick={() => handleDelete(todo)}
                         >
                           Delete this Todo
@@ -216,6 +217,7 @@ export default function Home() {
                           <Button
                             width="200px"
                             borderRadius="15px"
+                            hoverColor="#99ffbd"
                             onClick={() => handleComplete(todo)}
                           >
                             Mark Completed
@@ -229,6 +231,7 @@ export default function Home() {
                           <Button
                             width="200px"
                             borderRadius="15px"
+                            hoverColor="#fcebc5"
                             onClick={() => {
                               setTodoToEdit(todo);
                               setShowEditModal(true);

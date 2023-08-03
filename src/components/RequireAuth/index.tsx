@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/lib/store";
 import { populateTodo } from "@/features/todo/todoSlice";
 import { setAuthentication } from "@/features/auth/authSlice";
+import { todos } from "@/data/todos";
 
 const RequiresAuth = ({ children }: { children: any }) => {
   const isAuthorized = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -14,13 +15,9 @@ const RequiresAuth = ({ children }: { children: any }) => {
   useEffect(() => {
     let isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isAuthorized || isLoggedIn) {
-      try {
-        const storedTodo = JSON.parse(localStorage.getItem("todos") || "");
-        dispatch(populateTodo(storedTodo));
-        dispatch(setAuthentication(true));
-      } catch (e) {
-        router.push("/auth/login");
-      }
+      const storedTodo = JSON.parse(localStorage.getItem("todos")!);
+      dispatch(populateTodo(storedTodo));
+      dispatch(setAuthentication(true));
     } else {
       router.push("/auth/login");
     }
