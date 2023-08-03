@@ -1,13 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import RequiresAuth from "@/components/RequireAuth";
 import { Modal } from "@/components/Reusables/Modal";
 // import { todos } from "@/data/todos";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, markComplete, deleteTodo } from "@/features/todo/todoSlice";
+import {
+  addTodo,
+  markComplete,
+  deleteTodo,
+  updateEditedTodo,
+} from "@/features/todo/todoSlice";
 import type { RootState } from "@/lib/store";
+import { Button } from "@/components/Reusables/SharedStyling";
+import Image from "next/image";
+import Add from "../assets/add.svg";
 
 export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -16,6 +24,10 @@ export default function Home() {
   const [todoToEdit, setTodoToEdit] = useState(null);
   const todos = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const handleCreateTodo = () => {
     const newTodo = { todo, id: uuidv4(), completed: false };
@@ -30,22 +42,22 @@ export default function Home() {
     dispatch(deleteTodo(todo));
   };
 
-  const handleEditTodo = (todo) => {
-    setTodoToEdit(todo);
-    setShowEditModal(true);
-  };
-
   const updateTodo = () => {
-    setTodoList((prev) =>
-      prev?.map((t) => (t?.id === todoToEdit?.id ? todoToEdit : t))
-    );
     setShowEditModal(false);
+    dispatch(updateEditedTodo(todoToEdit));
   };
 
   return (
     <RequiresAuth>
       <Container>
-        <Button onClick={() => setShowCreateModal(true)}>Add New Todo</Button>
+        <Button
+          fontSize="16px"
+          borderRadius="15px"
+          justifyContent="space-between"
+          onClick={() => setShowCreateModal(true)}
+        >
+          Add New Todo <Image src={Add} height={30} width={30} alt="add" />
+        </Button>
         {showCreateModal && (
           <Modal>
             <AddTodoContainer>
@@ -72,7 +84,7 @@ export default function Home() {
                 }))
               }
             />
-            <button onClick={updateTodo}>save</button>
+            <Button onClick={updateTodo}>save</Button>
           </Modal>
         )}
         <TodosContainer>
@@ -80,7 +92,7 @@ export default function Home() {
             <>
               {todos?.map((todo) => {
                 return (
-                  <TodoContainer key={todo?.id}>
+                  <TodoCard key={todo?.id}>
                     <span
                       style={{
                         textDecoration: todo?.completed
@@ -92,17 +104,26 @@ export default function Home() {
                     </span>
                     <ActionContainer>
                       {todo?.completed ? (
-                        <button onClick={() => handleDelete(todo)}>
+                        <Button onClick={() => handleDelete(todo)}>
                           Delete
-                        </button>
+                        </Button>
                       ) : (
-                        <button onClick={() => handleComplete(todo)}>
-                          Done
-                        </button>
+                        <>
+                          <Button onClick={() => handleComplete(todo)}>
+                            Done
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setTodoToEdit(todo);
+                              setShowEditModal(true);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        </>
                       )}
-                      <button onClick={() => handleEditTodo(todo)}>Edit</button>
                     </ActionContainer>
-                  </TodoContainer>
+                  </TodoCard>
                 );
               })}
             </>
@@ -125,15 +146,7 @@ const Container = styled.div`
   align-items: center;
   padding: 10px 0px;
   row-gap: 20px;
-`;
-
-const Button = styled.button`
-  padding: 5px 10px;
-  font-size: 16px;
-  &:hover {
-    background: blue;
-    color: white;
-  }
+  background: #e0e0de;
 `;
 
 const AddTodoContainer = styled.div`
@@ -157,22 +170,24 @@ const Input = styled.input`
 
 const TodosContainer = styled.div`
   width: max-content;
-  padding: 10px;
-  border: 1px solid black;
+  padding: 15px;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 5px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px 2px #848687;
 `;
 
-const TodoContainer = styled.div`
-  border: 1px solid black;
+const TodoCard = styled.div`
   padding: 10px;
   min-width: 200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px 2px #848687;
 `;
 
 const ActionContainer = styled.div`

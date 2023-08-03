@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { credentials } from "@/data/credentials";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setAuthenticaion } from "@/features/auth/authSlice";
+import { setAuthentication } from "@/features/auth/authSlice";
 
 const LoginPage = () => {
   const [userData, setUserData] = useState({
@@ -23,7 +23,7 @@ const LoginPage = () => {
         userData.password === value.password
       ) {
         isMatched = true;
-        dispatch(setAuthenticaion(true));
+        dispatch(setAuthentication(true));
         router.push("/");
       }
     }

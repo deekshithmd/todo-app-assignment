@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "@/lib/store";
 import { todos } from "@/data/todos";
 
 // Define a type for the slice state
@@ -18,6 +17,9 @@ export const todoSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    populateTodo: (state, action: PayloadAction<any>) => {
+      state.todos = action.payload ? action.payload : todos;
+    },
     addTodo: (state, action: PayloadAction<any>) => {
       state.todos = state.todos?.concat(action.payload);
     },
@@ -31,12 +33,20 @@ export const todoSlice = createSlice({
         todo?.id === action.payload.id ? { ...todo, completed: true } : todo
       );
     },
+    updateEditedTodo: (state, action: PayloadAction<any>) => {
+      state.todos = state.todos?.map((todo) =>
+        todo?.id === action.payload.id ? action.payload : todo
+      );
+    },
   },
 });
 
-export const { addTodo, deleteTodo, markComplete } = todoSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-export const selectAuth = (state: RootState) => state.auth.isLoggedIn;
+export const {
+  addTodo,
+  deleteTodo,
+  markComplete,
+  updateEditedTodo,
+  populateTodo,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;
