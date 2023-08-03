@@ -22,7 +22,7 @@ import Tick from "../assets/tick.svg";
 import Edit from "../assets/edit.svg";
 import Star1 from "../assets/star-yellow.svg";
 import Star2 from "../assets/star-white.svg";
-import { TodoType, FilterType } from "@/types/type";
+import { TodoType, FilterType, FilterItemType } from "@/types/type";
 
 export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export default function Home() {
     name: "All",
     value: "all",
   });
-  const [filtered, setFiltered] = useState<TodoType[]>([]);
+  const [filtered, setFiltered] = useState<any>([]);
   const todos = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
 
@@ -52,8 +52,8 @@ export default function Home() {
     if (selectedFilter?.value === "all") {
       setFiltered(todos);
     } else {
-      const todoData = todos?.filter(
-        (item: TodoType) => item[selectedFilter?.value]
+      const todoData = todos?.filter((item: any) =>
+        item(selectedFilter?.value)
       );
       setFiltered(todoData);
     }
@@ -163,7 +163,7 @@ export default function Home() {
               background={
                 selectedFilter?.value === filter?.value ? "#a19aed" : "#ffff"
               }
-              color={selectedFilter?.value === filter?.value ? "#ffff" : null}
+              color={selectedFilter?.value === filter?.value ? "#ffff" : ""}
             >
               {filter.name}
             </FilterItem>
@@ -172,7 +172,7 @@ export default function Home() {
         <TodosContainer>
           {filtered?.length > 0 ? (
             <>
-              {filtered?.map((todo) => {
+              {filtered?.map((todo: any) => {
                 return (
                   <TodoCard key={todo?.id}>
                     <StarContainer>
@@ -387,7 +387,7 @@ const FilterContainer = styled.div`
   justify-content: center;
 `;
 
-const FilterItem = styled.span`
+const FilterItem = styled.span<FilterItemType>`
   padding: 5px 10px;
   width: 100px;
   display: flex;

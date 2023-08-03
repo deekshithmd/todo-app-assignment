@@ -14,9 +14,13 @@ const RequiresAuth = ({ children }: { children: any }) => {
   useEffect(() => {
     let isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isAuthorized || isLoggedIn) {
-      const storedTodo = JSON.parse(localStorage.getItem("todos"));
-      dispatch(populateTodo(storedTodo));
-      dispatch(setAuthentication(true));
+      try {
+        const storedTodo = JSON.parse(localStorage.getItem("todos") || "");
+        dispatch(populateTodo(storedTodo));
+        dispatch(setAuthentication(true));
+      } catch (e) {
+        router.push("/auth/login");
+      }
     } else {
       router.push("/auth/login");
     }

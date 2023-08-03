@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Image from "next/image";
+import { ButtonType, IconType, TextType } from "@/types/type";
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonType>`
   width: ${(props) => props.width || "auto"};
   padding: ${(props) => props.padding || "5px 10px"};
   border-radius: ${(props) => props.borderRadius || "5px"};
@@ -18,13 +19,13 @@ export const Button = styled.button`
   }
 `;
 
-export const Icon = styled(Image)`
+export const Icon = styled(Image)<IconType>`
   width: ${(props) => props.width || "30px"};
   height: ${(props) => props.height || "30px"};
   cursor: pointer;
 `;
 
-export const Text = styled.p`
+export const Text = styled.p<TextType>`
   font-size: ${(props) => props.fontSize || "12px"};
-  font-weight: ${(props) => props.fontweight || "400"};
+  font-weight: ${(props) => props.fontWeight || "400"};
 `;
