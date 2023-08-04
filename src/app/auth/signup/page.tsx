@@ -8,8 +8,7 @@ import { database } from "@/data/database";
 import { sampleData } from "@/utils/contants";
 import { SignupDataType } from "@/types/type";
 import { Button, Text, LinkText } from "@/components/Reusables/SharedStyling";
-import { useDispatch } from "react-redux";
-import { setUserData } from "@/features/auth/authSlice";
+
 
 const SignupPage = () => {
   const [newUserData, setNewUserData] = useState<SignupDataType>({
@@ -18,7 +17,6 @@ const SignupPage = () => {
     confirm: "",
   });
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const handleSignup = (e: any) => {
     e.preventDefault();
@@ -34,7 +32,7 @@ const SignupPage = () => {
         todos: sampleData.todos,
       };
       database?.push(newUser);
-      localStorage.setItem("userData", JSON.stringify(newUser));
+      // localStorage.setItem("userData", JSON.stringify(newUser));
       router?.push("/auth/login");
     } else {
       router?.push("/auth/signup");
