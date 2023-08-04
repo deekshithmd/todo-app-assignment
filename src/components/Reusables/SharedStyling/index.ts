@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
+import Link from "next/link";
+
 import { ButtonType, IconType, TextType } from "@/types/type";
 
 export const Button = styled.button<ButtonType>`
@@ -28,4 +30,8 @@ export const Icon = styled(Image)<IconType>`
 export const Text = styled.p<TextType>`
   font-size: ${(props) => props.fontSize || "12px"};
   font-weight: ${(props) => props.fontWeight || "400"};
+`;
+
+export const LinkText = styled(Link)`
+  text-decoration: underline;
 `;

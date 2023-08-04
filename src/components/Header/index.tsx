@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { setAuthentication } from "@/features/auth/authSlice";
-import { store, type RootState } from "@/lib/store";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setAuthentication } from "@/features/auth/authSlice";
+import { type RootState } from "@/lib/store";
 import { Button } from "../Reusables/SharedStyling";
 
 export const Header = () => {

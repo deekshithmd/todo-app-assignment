@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { credentials } from "@/data/credentials";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+
+import { credentials } from "@/data/credentials";
 import { setAuthentication } from "@/features/auth/authSlice";
 import { LoginDataType } from "@/types/type";
+import { Button, Text, LinkText } from "@/components/Reusables/SharedStyling";
 
 const LoginPage = () => {
   const [userData, setUserData] = useState<LoginDataType>({
@@ -55,7 +57,20 @@ const LoginPage = () => {
             }
           />
         </label>
-        <Button type="submit">Login</Button>
+        <Button
+          borderRadius="15px"
+          padding="8px 15px"
+          width="100px"
+          hoverColor="#e6faec"
+          fontSize="18px"
+          type="submit"
+        >
+          Login
+        </Button>
+        <Text fontSize="16px">
+          Don`t have account?{" "}
+          <LinkText href="/auth/signup">Click here to Signup</LinkText>
+        </Text>
       </LoginContainer>
     </Container>
   );
@@ -71,10 +86,10 @@ const Container = styled.div`
 
 const LoginContainer = styled.form`
   width: 300px;
-  height: 300px;
+  height: auto;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 10px;
+  padding: 30px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,10 +102,6 @@ const Input = styled.input`
   padding: 10px;
   border-radius: 5px;
   font-size: 16px;
-`;
-
-const Button = styled.button`
-  padding: 5px 10px;
 `;
 
 export default LoginPage;

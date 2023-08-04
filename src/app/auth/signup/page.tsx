@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { credentials } from "@/data/credentials";
 import { useRouter } from "next/navigation";
+
+import { credentials } from "@/data/credentials";
 import { SignupDataType } from "@/types/type";
+import { Button, Text, LinkText } from "@/components/Reusables/SharedStyling";
 
 const SignupPage = () => {
   const [userData, setUserData] = useState<SignupDataType>({
@@ -35,36 +37,52 @@ const SignupPage = () => {
     <Container>
       <LoginContainer onSubmit={handleSignup}>
         <h1>Signup</h1>
-        <label htmlFor="username">Username</label>
+        <Label htmlFor="username">Username</Label>
         <Input
           type="text"
           name="username"
+          placeholder="Type your username..."
           value={userData?.username}
           onChange={(e) =>
             setUserData((prev) => ({ ...prev, username: e.target.value }))
           }
         />
 
-        <label htmlFor="password">Password</label>
+        <Label htmlFor="password">Password</Label>
         <Input
           type="password"
           name="password"
+          placeholder="Type your password..."
           value={userData?.password}
           onChange={(e) =>
             setUserData((prev) => ({ ...prev, password: e.target.value }))
           }
         />
 
-        <label htmlFor="password">Confirm Password</label>
+        <Label htmlFor="confirm">Confirm Password</Label>
         <Input
           type="password"
-          name="password"
+          name="confirmd"
+          placeholder="Confirm password..."
           value={userData?.confirm}
           onChange={(e) =>
             setUserData((prev) => ({ ...prev, confirm: e.target.value }))
           }
         />
-        <Button type="submit">Signup</Button>
+        <Button
+          borderRadius="15px"
+          padding="8px 15px"
+          width="100px"
+          hoverColor="#e6faec"
+          fontSize="18px"
+          type="submit"
+        >
+          Signup
+        </Button>
+        <Text fontSize="16px">
+          Have account already?{" "}
+          <LinkText href="/auth/login">Click here to login</LinkText>
+        </Text>
       </LoginContainer>
     </Container>
   );
@@ -80,7 +98,7 @@ const Container = styled.div`
 
 const LoginContainer = styled.form`
   width: 300px;
-  height: 400px;
+  height: auto;
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px;
@@ -98,8 +116,11 @@ const Input = styled.input`
   font-size: 16px;
 `;
 
-const Button = styled.button`
-  padding: 5px 10px;
+const Label = styled.label`
+  font-size: 18px;
+  width: 100%;
+  text-align: left;
+  margin-left: 55px;
 `;
 
 export default SignupPage;
