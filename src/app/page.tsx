@@ -37,17 +37,12 @@ export default function Home() {
   const [filtered, setFiltered] = useState<any>([]);
   const todos = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
-  console.log("todos",todos)
 
   const filterData = [
     { id: 1, name: "All", value: "all" },
     { id: 2, name: "Important", value: "important" },
     { id: 3, name: "Completed", value: "completed" },
   ];
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
 
   useEffect(() => {
     if (selectedFilter?.value === "all") {

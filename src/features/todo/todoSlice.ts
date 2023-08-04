@@ -24,20 +24,36 @@ export const todoSlice = createSlice({
     },
     addTodo: (state, action: PayloadAction<any>) => {
       state.todos = state.todos?.concat(action.payload);
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(state.todos?.map((todo) => todo))
+      );
     },
     deleteTodo: (state, action: PayloadAction<any>) => {
       state.todos = state.todos?.filter(
         (todo) => todo?.id !== action.payload.id
+      );
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(state.todos?.map((todo) => todo))
       );
     },
     markComplete: (state, action: PayloadAction<any>) => {
       state.todos = state.todos?.map((todo) =>
         todo?.id === action.payload.id ? { ...todo, completed: true } : todo
       );
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(state.todos?.map((todo) => todo))
+      );
     },
     updateEditedTodo: (state, action: PayloadAction<any>) => {
       state.todos = state.todos?.map((todo) =>
         todo?.id === action.payload.id ? action.payload : todo
+      );
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(state.todos?.map((todo) => todo))
       );
     },
     markImportant: (state, action: PayloadAction<any>) => {
@@ -45,6 +61,10 @@ export const todoSlice = createSlice({
         todo?.id === action.payload.id
           ? { ...todo, important: todo?.important ? false : true }
           : todo
+      );
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(state.todos?.map((todo) => todo))
       );
     },
   },
