@@ -1,15 +1,19 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { DatabaseType } from "@/types/type";
+import { sampleData } from "@/utils/contants";
 
 // Define a type for the slice state
 interface AuthState {
   isLoggedIn?: boolean;
+  userData?: DatabaseType;
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
   isLoggedIn: false,
+  userData: {},
 };
 
 export const authSlice = createSlice({
@@ -17,13 +21,14 @@ export const authSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setAuthentication: (state, action: PayloadAction<boolean>) => {
-      state.isLoggedIn = action.payload;
-      localStorage.setItem("isLoggedIn", String(action.payload));
+    setUserData: (state, action: PayloadAction<DatabaseType>) => {
+      state.isLoggedIn = action.payload.isLoggedIn;
+      localStorage.setItem("isLoggedIn", String(state.isLoggedIn));
+      localStorage.setItem("userData", JSON.stringify(action.payload));
     },
   },
 });
 
-export const { setAuthentication } = authSlice.actions;
+export const { setUserData } = authSlice.actions;
 
 export default authSlice.reducer;

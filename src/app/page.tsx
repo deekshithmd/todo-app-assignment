@@ -44,17 +44,19 @@ export default function Home() {
     { id: 3, name: "Completed", value: "completed" },
   ];
 
+  // Filtering todos
   useEffect(() => {
     if (selectedFilter?.value === "all") {
-      setFiltered(todos);
+      setFiltered(todos?.todos);
     } else {
       const filterValue =
         selectedFilter?.value === "important" ? "important" : "completed";
-      const todoData = todos?.filter((item: any) => item[filterValue]);
+      const todoData = todos?.todos?.filter((item: any) => item[filterValue]);
       setFiltered(todoData);
     }
   }, [selectedFilter, todos]);
 
+  // Creating new todo
   const handleCreateTodo = () => {
     if (todo !== "") {
       const newTodo = {
@@ -69,13 +71,17 @@ export default function Home() {
     setTodo("");
   };
 
+  // Updating as completed
   const handleComplete = (todo: TodoType) => {
     dispatch(markComplete(todo));
   };
+
+  // Deleting completed todo
   const handleDelete = (todo: TodoType) => {
     dispatch(deleteTodo(todo));
   };
 
+  // Updating todo content
   const updateTodo = () => {
     setShowEditModal(false);
     dispatch(updateEditedTodo(todoToEdit));

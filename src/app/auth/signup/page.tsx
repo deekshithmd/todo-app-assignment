@@ -2,13 +2,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
-import { credentials } from "@/data/credentials";
+import { database } from "@/data/database";
+import { sampleData } from "@/utils/contants";
 import { SignupDataType } from "@/types/type";
 import { Button, Text, LinkText } from "@/components/Reusables/SharedStyling";
 
+
 const SignupPage = () => {
-  const [userData, setUserData] = useState<SignupDataType>({
+  const [newUserData, setNewUserData] = useState<SignupDataType>({
     username: "",
     password: "",
     confirm: "",
@@ -17,16 +20,24 @@ const SignupPage = () => {
 
   const handleSignup = (e: any) => {
     e.preventDefault();
-    if (userData?.username !== "" && userData?.password === userData?.confirm) {
-      credentials?.push({
-        username: userData?.username,
-        password: userData?.password,
-      });
+    if (
+      newUserData?.username !== "" &&
+      newUserData?.password === newUserData?.confirm
+    ) {
+      const newUser = {
+        id: uuidv4(),
+        username: newUserData?.username,
+        password: newUserData?.password,
+        isLoggedIn: false,
+        todos: sampleData.todos,
+      };
+      database?.push(newUser);
+      // localStorage.setItem("userData", JSON.stringify(newUser));
       router?.push("/auth/login");
     } else {
       router?.push("/auth/signup");
     }
-    setUserData({
+    setNewUserData({
       username: "",
       password: "",
       confirm: "",
@@ -42,9 +53,9 @@ const SignupPage = () => {
           type="text"
           name="username"
           placeholder="Type your username..."
-          value={userData?.username}
+          value={newUserData?.username}
           onChange={(e) =>
-            setUserData((prev) => ({ ...prev, username: e.target.value }))
+            setNewUserData((prev) => ({ ...prev, username: e.target.value }))
           }
         />
 
@@ -53,9 +64,9 @@ const SignupPage = () => {
           type="password"
           name="password"
           placeholder="Type your password..."
-          value={userData?.password}
+          value={newUserData?.password}
           onChange={(e) =>
-            setUserData((prev) => ({ ...prev, password: e.target.value }))
+            setNewUserData((prev) => ({ ...prev, password: e.target.value }))
           }
         />
 
@@ -64,9 +75,9 @@ const SignupPage = () => {
           type="password"
           name="confirmd"
           placeholder="Confirm password..."
-          value={userData?.confirm}
+          value={newUserData?.confirm}
           onChange={(e) =>
-            setUserData((prev) => ({ ...prev, confirm: e.target.value }))
+            setNewUserData((prev) => ({ ...prev, confirm: e.target.value }))
           }
         />
         <Button

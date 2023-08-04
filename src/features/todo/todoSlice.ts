@@ -1,17 +1,17 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { todos } from "@/data/todos";
-import { TodoType } from "@/types/type";
+import { database } from "@/data/database";
+import { DatabaseType } from "@/types/type";
 
 // Define a type for the slice state
 interface TodoState {
-  todos?: TodoType[];
+  todos?: DatabaseType;
 }
 
 // Define the initial state using that type
 const initialState: TodoState = {
-  todos: todos,
+  todos: {},
 };
 
 export const todoSlice = createSlice({
@@ -20,51 +20,81 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     populateTodo: (state, action: PayloadAction<any>) => {
-      state.todos = action.payload ? action.payload : todos;
+      state.todos = action.payload ? action.payload : database[0];
     },
     addTodo: (state, action: PayloadAction<any>) => {
-      state.todos = state.todos?.concat(action.payload);
+      state.todos = {
+        ...state.todos,
+        todos: state?.todos?.todos?.concat(action.payload),
+      };
       localStorage.setItem(
-        "todos",
-        JSON.stringify(state.todos?.map((todo) => todo))
+        "userData",
+        JSON.stringify({
+          ...state.todos,
+          todos: state.todos?.todos?.map((todo) => todo),
+        })
       );
     },
     deleteTodo: (state, action: PayloadAction<any>) => {
-      state.todos = state.todos?.filter(
-        (todo) => todo?.id !== action.payload.id
-      );
+      state.todos = {
+        ...state.todos,
+        todos: state.todos?.todos?.filter(
+          (todo) => todo?.id !== action.payload.id
+        ),
+      };
       localStorage.setItem(
-        "todos",
-        JSON.stringify(state.todos?.map((todo) => todo))
+        "userData",
+        JSON.stringify({
+          ...state.todos,
+          todos: state.todos?.todos?.map((todo) => todo),
+        })
       );
     },
     markComplete: (state, action: PayloadAction<any>) => {
-      state.todos = state.todos?.map((todo) =>
-        todo?.id === action.payload.id ? { ...todo, completed: true } : todo
-      );
+      state.todos = {
+        ...state.todos,
+        todos: state.todos?.todos?.map((todo) =>
+          todo?.id === action.payload.id ? { ...todo, completed: true } : todo
+        ),
+      };
       localStorage.setItem(
-        "todos",
-        JSON.stringify(state.todos?.map((todo) => todo))
+        "userData",
+        JSON.stringify({
+          ...state.todos,
+          todos: state.todos?.todos?.map((todo) => todo),
+        })
       );
     },
     updateEditedTodo: (state, action: PayloadAction<any>) => {
-      state.todos = state.todos?.map((todo) =>
-        todo?.id === action.payload.id ? action.payload : todo
-      );
+      state.todos = {
+        ...state.todos,
+        todos: state.todos?.todos?.map((todo) =>
+          todo?.id === action.payload.id ? action.payload : todo
+        ),
+      };
       localStorage.setItem(
-        "todos",
-        JSON.stringify(state.todos?.map((todo) => todo))
+        "userData",
+        JSON.stringify({
+          ...state.todos,
+          todos: state.todos?.todos?.map((todo) => todo),
+        })
       );
     },
     markImportant: (state, action: PayloadAction<any>) => {
-      state.todos = state.todos?.map((todo) =>
-        todo?.id === action.payload.id
-          ? { ...todo, important: todo?.important ? false : true }
-          : todo
-      );
+      state.todos = {
+        ...state.todos,
+        todos: state.todos?.todos?.map((todo) =>
+          todo?.id === action.payload.id
+            ? { ...todo, important: todo?.important ? false : true }
+            : todo
+        ),
+      };
       localStorage.setItem(
-        "todos",
-        JSON.stringify(state.todos?.map((todo) => todo))
+        "userData",
+        JSON.stringify({
+          ...state.todos,
+          todos: state.todos?.todos?.map((todo) => todo),
+        })
       );
     },
   },

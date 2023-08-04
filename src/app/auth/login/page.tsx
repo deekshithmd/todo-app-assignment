@@ -4,35 +4,60 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
-import { credentials } from "@/data/credentials";
-import { setAuthentication } from "@/features/auth/authSlice";
+import { database } from "@/data/database";
+import { setUserData } from "@/features/auth/authSlice";
 import { LoginDataType } from "@/types/type";
 import { Button, Text, LinkText } from "@/components/Reusables/SharedStyling";
 
 const LoginPage = () => {
-  const [userData, setUserData] = useState<LoginDataType>({
+  const [userDetails, setUserDetails] = useState<LoginDataType>({
     username: "",
     password: "",
   });
   const router = useRouter();
   const dispatch = useDispatch();
 
+  // handling login
   const handleLogin = (e: any) => {
     e.preventDefault();
-    let isMatched = false;
-    for (let value of credentials) {
+    let isMatched = false,
+      isNew = true;
+
+    //testing whether user signed up before and loggedin
+    const existingLocalData = JSON.parse(localStorage.getItem("userData")!);
+    for (let value of database) {
+      if (existingLocalData?.id === value?.id) {
+        isNew = false;
+      }
+    }
+
+    if (isNew) {
+      database.push(existingLocalData);
+    }
+
+    // testing authentication
+    for (let value of database) {
       if (
-        userData.username === value?.username &&
-        userData.password === value.password
+        userDetails.username === value?.username &&
+        userDetails.password === value.password
       ) {
         isMatched = true;
-        dispatch(setAuthentication(true));
+
+        // persisting his previous activity
+        const historyData =
+          existingLocalData?.id === value?.id ? existingLocalData : value;
+        const loggedInData = { ...historyData, isLoggedIn: true };
+        dispatch(setUserData(loggedInData));
         router.push("/");
       }
     }
     if (!isMatched) {
       router.push("/auth/signup");
     }
+    setUserDetails({
+      username: "",
+      password: "",
+    });
   };
 
   return (
@@ -42,9 +67,11 @@ const LoginPage = () => {
         <label htmlFor="username">
           <Input
             type="text"
+            placeholder="Enter username..."
             name="username"
+            value={userDetails?.username}
             onChange={(e) =>
-              setUserData((prev) => ({ ...prev, username: e.target.value }))
+              setUserDetails((prev) => ({ ...prev, username: e.target.value }))
             }
           />
         </label>
@@ -52,8 +79,10 @@ const LoginPage = () => {
           <Input
             type="password"
             name="password"
+            placeholder="Enter password..."
+            value={userDetails?.password}
             onChange={(e) =>
-              setUserData((prev) => ({ ...prev, password: e.target.value }))
+              setUserDetails((prev) => ({ ...prev, password: e.target.value }))
             }
           />
         </label>

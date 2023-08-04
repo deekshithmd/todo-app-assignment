@@ -4,25 +4,27 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setAuthentication } from "@/features/auth/authSlice";
+import { setUserData } from "@/features/auth/authSlice";
 import { type RootState } from "@/lib/store";
 import { Button } from "../Reusables/SharedStyling";
 
 export const Header = () => {
-  const isAuthorized = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const userData = useSelector((state: RootState) => state.auth.userData);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleLogout = () => {
-    dispatch(setAuthentication(false));
+    const updatedUserData = JSON.parse(localStorage.getItem("userData")!);
+    const logoutData = { ...updatedUserData, isLoggedIn: false };
+    dispatch(setUserData(logoutData));
     router.push("/auth/login");
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("todos");
   };
   return (
     <HeaderContainer>
       <Logo onClick={() => router.push("/")}>To-Do App</Logo>
-      {!isAuthorized ? (
+      {!isLoggedIn ? (
         <Button
           fontSize="16px"
           onClick={() => {
