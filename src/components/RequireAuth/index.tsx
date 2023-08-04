@@ -6,6 +6,7 @@ import type { RootState } from "@/lib/store";
 import { populateTodo } from "@/features/todo/todoSlice";
 import { setUserData } from "@/features/auth/authSlice";
 
+// Testing whether user authenticated or not
 const RequiresAuth = ({ children }: { children: any }) => {
   const isAuthorized = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();

@@ -44,6 +44,7 @@ export default function Home() {
     { id: 3, name: "Completed", value: "completed" },
   ];
 
+  // Filtering todos
   useEffect(() => {
     if (selectedFilter?.value === "all") {
       setFiltered(todos?.todos);
@@ -55,6 +56,7 @@ export default function Home() {
     }
   }, [selectedFilter, todos]);
 
+  // Creating new todo
   const handleCreateTodo = () => {
     if (todo !== "") {
       const newTodo = {
@@ -69,13 +71,17 @@ export default function Home() {
     setTodo("");
   };
 
+  // Updating as completed
   const handleComplete = (todo: TodoType) => {
     dispatch(markComplete(todo));
   };
+
+  // Deleting completed todo
   const handleDelete = (todo: TodoType) => {
     dispatch(deleteTodo(todo));
   };
 
+  // Updating todo content
   const updateTodo = () => {
     setShowEditModal(false);
     dispatch(updateEditedTodo(todoToEdit));

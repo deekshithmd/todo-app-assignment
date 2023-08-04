@@ -17,17 +17,35 @@ const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  // handling login
   const handleLogin = (e: any) => {
     e.preventDefault();
-    let isMatched = false;
+    let isMatched = false,
+      isNew = true;
+
+    //testing whether user signed up before and loggedin
+    const existingLocalData = JSON.parse(localStorage.getItem("userData")!);
+    for (let value of database) {
+      if (existingLocalData?.id === value?.id) {
+        isNew = false;
+      }
+    }
+
+    if (isNew) {
+      database.push(existingLocalData);
+    }
+
+    // testing authentication
     for (let value of database) {
       if (
         userDetails.username === value?.username &&
         userDetails.password === value.password
       ) {
         isMatched = true;
-        const prevData = JSON.parse(localStorage.getItem("userData")!);
-        const historyData = prevData?.id === value?.id ? prevData : value;
+
+        // persisting his previous activity
+        const historyData =
+          existingLocalData?.id === value?.id ? existingLocalData : value;
         const loggedInData = { ...historyData, isLoggedIn: true };
         dispatch(setUserData(loggedInData));
         router.push("/");
