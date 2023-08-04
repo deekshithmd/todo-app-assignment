@@ -34,7 +34,7 @@ const SignupPage = () => {
         todos: sampleData.todos,
       };
       database?.push(newUser);
-      console.log("database",database);
+      localStorage.setItem("userData", JSON.stringify(newUser));
       router?.push("/auth/login");
     } else {
       router?.push("/auth/signup");
