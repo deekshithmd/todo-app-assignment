@@ -17,7 +17,6 @@ export const Header = () => {
   const handleLogout = () => {
     const updatedUserData = JSON.parse(localStorage.getItem("userData")!);
     const logoutData = { ...updatedUserData, isLoggedIn: false };
-    console.log("logout", logoutData);
     dispatch(setUserData(logoutData));
     router.push("/auth/login");
     localStorage.removeItem("isLoggedIn");

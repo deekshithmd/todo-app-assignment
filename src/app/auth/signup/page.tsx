@@ -34,6 +34,7 @@ const SignupPage = () => {
         todos: sampleData.todos,
       };
       database?.push(newUser);
+      console.log("database",database);
       router?.push("/auth/login");
     } else {
       router?.push("/auth/signup");
