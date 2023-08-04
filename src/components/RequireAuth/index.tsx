@@ -14,7 +14,7 @@ const RequiresAuth = ({ children }: { children: any }) => {
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("userData")!);
-    if (isAuthorized || user) {
+    if (isAuthorized || user?.isLoggedIn) {
       dispatch(populateTodo(user));
       dispatch(setUserData(user));
     } else {
