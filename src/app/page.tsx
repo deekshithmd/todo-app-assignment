@@ -37,6 +37,7 @@ export default function Home() {
   const [filtered, setFiltered] = useState<any>([]);
   const todos = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
+  console.log("todos",todos)
 
   const filterData = [
     { id: 1, name: "All", value: "all" },
@@ -62,8 +63,8 @@ export default function Home() {
   const handleCreateTodo = () => {
     if (todo !== "") {
       const newTodo = {
-        todo,
         id: uuidv4(),
+        todo,
         completed: false,
         important: false,
       };
