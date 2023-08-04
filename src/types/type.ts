@@ -5,6 +5,14 @@ export interface TodoType {
   important: boolean;
 }
 
+export interface DatabaseType {
+  id?: string;
+  username?: string;
+  password?: string;
+  isLoggedIn?: boolean;
+  todos?: TodoType[];
+}
+
 export interface FilterType {
   id?: number;
   name?: string;

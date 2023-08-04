@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/lib/store";
 import { populateTodo } from "@/features/todo/todoSlice";
-import { setAuthentication } from "@/features/auth/authSlice";
+import { setUserData } from "@/features/auth/authSlice";
 
 const RequiresAuth = ({ children }: { children: any }) => {
   const isAuthorized = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -12,11 +12,10 @@ const RequiresAuth = ({ children }: { children: any }) => {
   const router = useRouter();
 
   useEffect(() => {
-    let isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isAuthorized || isLoggedIn) {
-      const storedTodo = JSON.parse(localStorage.getItem("todos")!);
-      dispatch(populateTodo(storedTodo));
-      dispatch(setAuthentication(true));
+    let user = JSON.parse(localStorage.getItem("userData")!);
+    if (isAuthorized || user) {
+      dispatch(populateTodo(user));
+      dispatch(setUserData(user));
     } else {
       router.push("/auth/login");
     }

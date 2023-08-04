@@ -46,11 +46,11 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedFilter?.value === "all") {
-      setFiltered(todos);
+      setFiltered(todos?.todos);
     } else {
       const filterValue =
         selectedFilter?.value === "important" ? "important" : "completed";
-      const todoData = todos?.filter((item: any) => item[filterValue]);
+      const todoData = todos?.todos?.filter((item: any) => item[filterValue]);
       setFiltered(todoData);
     }
   }, [selectedFilter, todos]);
